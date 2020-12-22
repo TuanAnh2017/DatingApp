@@ -1,0 +1,11 @@
+<h1>{{title}}</h1> <!--Nó sẽ lấy title trong  app.component.ts-->
+<ul>
+    <li *ngFor = 'let user of user'>{{user.id}} - {{user.userName}}</li>  <!--Cái này dùng cấu trúc chỉ thị Structural Directive-->
+    <!--Đoạn trên này chỉ hiển thị giống ở dưới đây-->
+    <!-- 1 -
+         2 -
+         3 -
+         4 -
+         5 - -->
+    <!-- Sửa lỗi thì UserName phải đánh đúng cú pháp lạc đà - CamelCase: userName => Trong Angular nó bắt chặt cái cú pháp này -->
+</ul> 
