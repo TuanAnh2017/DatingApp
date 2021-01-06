@@ -15,7 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule // Khi cài đặt Bootrap thì nó sẽ thêm đoạn mã này
   ],
   providers: [],
   bootstrap: [AppComponent]
