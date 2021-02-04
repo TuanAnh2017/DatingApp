@@ -12,6 +12,7 @@ namespace API.Controllers
 {
     public class AccountController : BaseAPIColtroller
     {
+        private const string Value = "PassWord is Invalid";
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
         public AccountController(DataContext context, ITokenService tokenService)
@@ -43,6 +44,7 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
+                Password = user.PasswordSalt.ToString(),
                 Token = _tokenService.CreateToken(user)
             };
 
@@ -66,7 +68,11 @@ namespace API.Controllers
             {
                 for (int i = 0; i < computedHash.Length; i++)
                 {
-                    if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("PassWord is Invalid");
+                    if (computedHash[i] != user.PasswordHash[i])
+                    {
+                        return Unauthorized(Value);
+                    }
+
                 }
             }
             catch (System.Exception)
@@ -77,8 +83,9 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
+                Password = user.PasswordSalt.ToString(),
                 Token = _tokenService.CreateToken(user)
-            };     
+            };
 
         }
 
