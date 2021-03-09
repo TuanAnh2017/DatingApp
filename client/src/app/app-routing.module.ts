@@ -27,7 +27,7 @@ const routes: Routes = [  //This array to provide the routes that we tell Angula
   { path: 'errors', component: TestErrorsComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'server-error', component: ServerErrorComponent },
-  { path: '**', component: HomeComponent, pathMatch: 'full' } // When user's typed in something that doesn't match, we are going to redirects
+  { path: '**', component: ServerErrorComponent, pathMatch: 'full' } // When user's typed in something that doesn't match, we are going to redirects
   // them back to the home component
 ];
 
