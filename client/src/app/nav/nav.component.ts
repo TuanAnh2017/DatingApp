@@ -30,12 +30,21 @@ export class NavComponent implements OnInit {
   //   })
   // }  //Đây là code cũ
 
+  // login() {  // Hàm login xử lý thông báo toast
+  //   this.accountService.login(this.model).subscribe(Response => {
+  //     this.router.navigateByUrl('/members');
+  //   }, error => {
+  //     console.log(error);
+  //     this.toast.error(error.error);    
+  //   })
+  // }
+
+  // Bởi vì đã có xử lý lỗi xác thực get400ValidationError nên xử lý lỗi toast.error có thể bỏ đi
+  // Hàm login mới
+
   login() {
     this.accountService.login(this.model).subscribe(Response => {
       this.router.navigateByUrl('/members');
-    }, error => {
-      console.log(error);
-      this.toast.error(error.error);    
     })
   }
 

@@ -7,6 +7,7 @@ using System.Text;
 using API.DTOs;
 using Microsoft.EntityFrameworkCore;
 using API.Interfaces;
+using System;
 
 namespace API.Controllers
 {
@@ -24,16 +25,14 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDTO registerDTO)
         {
-            if (await UserExists(registerDTO.Username)) return BadRequest("Username is taken");
-
+            if (await UserExists(registerDTO.Username)) return BadRequest("UserName is taken");
 
             using var hmac = new HMACSHA512(); // Nó sẽ cung cấp cho ta hàm băm để tạo password hash
-
             var user = new AppUser
             {
                 UserName = registerDTO.Username,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password)), // Lỗi xuất hiện ở đây, Hàm ComputeHash Convert string ra
-                // ByteArraay mà Password is null nên lỗi, out ra ngoài
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password)),  // Lỗi xuất hiện ở đây, Hàm ComputeHash Convert string ra
+                                                                                                // ByteArraay mà Password is null nên lỗi, out ra ngoài
                 PasswordSalt = hmac.Key
             };
 
@@ -44,46 +43,39 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Password = user.PasswordSalt.ToString(),
+                // Password = user.PasswordSalt.ToString(),
                 Token = _tokenService.CreateToken(user)
             };
 
         }
 
         [HttpPost("login")]
-
         public async Task<ActionResult<UserDto>> Login(LoginDTO loginDTO)
         {
-
-            var user = await _context.Users
-                .SingleOrDefaultAsync(x => x.UserName == loginDTO.Username);  //=> Cái này trả về phần tử duy nhất của chuỗi hoặc là giá trị mặc định nếu chuỗi là rỗng
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDTO.Username); // Cái này trả về phần tử duy nhất của chuỗi hoặc là giá trị mặc định nếu chuỗi là rỗng
 
             if (user == null) return Unauthorized("Invalid UserName");
-
             using var hmac = new HMACSHA512(user.PasswordSalt);
 
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
-
+            var ComputeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
             try
             {
-                for (int i = 0; i < computedHash.Length; i++)
+                for (int i = 0; i < ComputeHash.Length; i++)
                 {
-                    if (computedHash[i] != user.PasswordHash[i])
+                    if (ComputeHash[i] != user.PasswordHash[i])
                     {
                         return Unauthorized(Value);
                     }
-
                 }
             }
             catch (System.Exception)
             {
                 throw;
             }
-
             return new UserDto
             {
                 Username = user.UserName,
-                Password = user.PasswordSalt.ToString(),
+                // Password = user.PasswordSalt.ToString(),
                 Token = _tokenService.CreateToken(user)
             };
 
@@ -93,6 +85,8 @@ namespace API.Controllers
         {
             return await _context.Users.AnyAsync(x => x.UserName == username.ToLower()); // Hàm này sẽ kiểm tra xem nếu có bất kì 1 User nào
                                                                                          // bên trong bảng mà phù hợp với username này
+
+
         }
 
     }
