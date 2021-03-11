@@ -30,6 +30,7 @@ export class NavComponent implements OnInit {
   //   })
   // }  //Đây là code cũ
 
+<<<<<<< HEAD
   // login() {  // Hàm login xử lý thông báo toast
   //   this.accountService.login(this.model).subscribe(Response => {
   //     this.router.navigateByUrl('/members');
@@ -45,6 +46,14 @@ export class NavComponent implements OnInit {
   login() {
     this.accountService.login(this.model).subscribe(Response => {
       this.router.navigateByUrl('/members');
+=======
+  login() {
+    this.accountService.login(this.model).subscribe(Response => {
+      this.router.navigateByUrl('/members');
+    }, error => {
+      console.log(error);
+      this.toast.error(error.error);    
+>>>>>>> d6ef3d549ac4e3a98dda092bb50454d4a19ca4bb
     })
   }
 
