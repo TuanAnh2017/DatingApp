@@ -132,7 +132,7 @@
         }
       }
     }
-  },
+},
   "defaultProject": "client",
   "cli": {
     "analytics": "86ebad6c-1b7d-4727-bcd2-fcabe7d0e960"

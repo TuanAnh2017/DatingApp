@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    [Authorize] // Tất cả user trong class này giờ sẽ được protected with authorization
     public class UserController : BaseAPIColtroller
     {
         private readonly DataContext _context;
@@ -19,16 +20,15 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous] // Chấp nhận vô danh
+        // [AllowAnonymous] // Chấp nhận vô danh - Bài 89 bỏ tính năng này đi
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
             //Cách khác: //return  _context.Users.ToListAsync().Result;
-
         }
 
-        [Authorize]
-        [HttpGet("{id}")]
+        // [Authorize] // Bài 89 bỏ tính năng này đi
+        [HttpGet("{id}")] 
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
             return await _context.Users.FindAsync(id);
